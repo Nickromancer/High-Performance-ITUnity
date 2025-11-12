@@ -419,8 +419,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1120986432}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.34985843, y: -0, z: -0, w: 0.9368026}
-  m_LocalPosition: {x: 1000, y: 533, z: 70}
+  m_LocalRotation: {x: 0.08995865, y: -0.34393907, z: 0.033092994, w: 0.93408686}
+  m_LocalPosition: {x: 1024.528, y: 9.782179, z: 972.1239}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -573,7 +573,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1716199360}
   - component: {fileID: 1716199359}
-  - component: {fileID: 1716199358}
+  - component: {fileID: 1716199361}
   m_Layer: 0
   m_Name: terrain_mountain_section
   m_TagString: Untagged
@@ -581,26 +581,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
   m_IsActive: 1
---- !u!154 &1716199358
-TerrainCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1716199357}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_TerrainData: {fileID: 15600000, guid: ce2cca2b9bf4e014ea57a2336f454c5f, type: 2}
-  m_EnableTreeColliders: 1
 --- !u!218 &1716199359
 Terrain:
   m_ObjectHideFlags: 0
@@ -656,6 +636,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!64 &1716199361
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716199357}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &1847789935
 GameObject:
   m_ObjectHideFlags: 0
@@ -757,5 +759,5 @@ SceneRoots:
   - {fileID: 507930239}
   - {fileID: 1847789938}
   - {fileID: 864047792}
-  - {fileID: 1716199360}
   - {fileID: 1580502554}
+  - {fileID: 1716199360}
