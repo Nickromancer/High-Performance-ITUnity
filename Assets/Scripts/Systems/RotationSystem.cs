@@ -12,12 +12,12 @@ public partial struct RotationSystem : ISystem
 
     public void OnCreate(ref SystemState state)
     {
-       state.RequireForUpdate<ManagerSingeltonComponent>();
+        state.RequireForUpdate<SpawnerComponent>();
     }
 
     public void OnDestroy(ref SystemState state)
     {
-    
+
     }
 
     public void OnUpdate(ref SystemState state)
@@ -27,15 +27,15 @@ public partial struct RotationSystem : ISystem
         foreach (var (rot, rotData) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<RotatingData>>().WithNone<StopRotatingTag>().WithAll<RotateTag>())
         {
             float y = rot.ValueRO.Position.y;
-                if (y > 0)
-                {
-                    var xRot = quaternion.RotateX( rotData.ValueRO.Value *  Mathf.Deg2Rad * dt);
-            
-                    rot.ValueRW.Rotation = math.mul(rot.ValueRO.Rotation, xRot);
-                }
+            if (y >= 1)
+            {
+                var xRot = quaternion.RotateY(rotData.ValueRO.Value * Mathf.Deg2Rad * dt);
 
-            
+                rot.ValueRW.Rotation = math.mul(rot.ValueRO.Rotation, xRot);
+            }
+
+
         }
-        
+
     }
 }
