@@ -23,8 +23,6 @@ class SpawnerBaker : MonoBehaviour
                 delay = authoring.delay,
                 timer = authoring.timer
             });
-
-            DynamicBuffer<ParticlePosition> particleBuffer = AddBuffer<ParticlePosition>(entity);
         }
     }
 }
