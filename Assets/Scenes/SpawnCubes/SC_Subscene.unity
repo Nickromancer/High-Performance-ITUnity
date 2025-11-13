@@ -166,7 +166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabToSpawn: {fileID: 1824924136179805553, guid: 6fb3088adf84f6042b3f1c8e8b3f9439, type: 3}
   hasBuffer: 1
-  spawnAmount: 1000
+  spawnAmount: 349
   width: 100
   length: 100
 --- !u!114 &1927085355
