@@ -4,6 +4,7 @@ using UnityEngine;
 class ConfigBaker : MonoBehaviour
 {
     public GameObject prefab;
+    public int maxPoolSize;
 }
 
 class ConfigBakerBaker : Baker<ConfigBaker>
@@ -14,6 +15,7 @@ class ConfigBakerBaker : Baker<ConfigBaker>
         AddComponent(entity, new ConfigComp
         {
             prefab = GetEntity(authoring.prefab, TransformUsageFlags.Dynamic),
+            maxPoolSize = authoring.maxPoolSize
         });
     }
 }
@@ -21,4 +23,5 @@ class ConfigBakerBaker : Baker<ConfigBaker>
 public struct ConfigComp : IComponentData
 {
     public Entity prefab;
+    public int maxPoolSize;
 }

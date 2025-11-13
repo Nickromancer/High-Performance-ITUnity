@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -9,23 +10,24 @@ class SpawnerBaker : MonoBehaviour
     public float delay;
 
     public float timer;
-}
 
-class SpawnerBakerBaker : Baker<SpawnerBaker>
-{
-    public override void Bake(SpawnerBaker authoring)
+    class SpawnerBakerBaker : Baker<SpawnerBaker>
     {
-        var entity = GetEntity(TransformUsageFlags.Dynamic);
-        AddComponent(entity, new SpawnerComponent
+        public override void Bake(SpawnerBaker authoring)
         {
-            width = authoring.width,
-            depth = authoring.depth,
-            delay = authoring.delay,
-            timer = authoring.timer
-        });
+            var entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponent(entity, new SpawnerComponent
+            {
+                width = authoring.width,
+                depth = authoring.depth,
+                delay = authoring.delay,
+                timer = authoring.timer
+            });
+
+            DynamicBuffer<ParticlePosition> particleBuffer = AddBuffer<ParticlePosition>(entity);
+        }
     }
 }
-
 public struct SpawnerComponent : IComponentData
 {
     public float width;
@@ -33,4 +35,5 @@ public struct SpawnerComponent : IComponentData
     public float delay;
 
     public float timer;
+
 }
