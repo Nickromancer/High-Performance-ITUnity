@@ -64,7 +64,10 @@ partial struct ParticleSpawnerSystem : ISystem
                     state.EntityManager.SetComponentData(entity, new ParticleTag { fallen = false });
                 }
             }
-            config.particleAmount = amountOfParticles;
+            foreach (var con in SystemAPI.Query<RefRW<ConfigComp>>())
+            {
+                con.ValueRW.particleAmount = amountOfParticles;
+            }
             spawner.ValueRW.timer -= Time.deltaTime;
         }
     }

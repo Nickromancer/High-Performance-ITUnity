@@ -19,6 +19,11 @@ public class ParticleCounter : MonoBehaviour
     void Update()
     {
         _config = _manager.CreateEntityQuery(typeof(ConfigComp)).GetSingletonEntity();
+        if (Time.frameCount > 100)
+        {
+            _config = _manager.CreateEntityQuery(typeof(ConfigComp)).GetSingletonEntity();
+
+        }
         text.text = "Particles: " + _manager.GetComponentData<ConfigComp>(_config).particleAmount;
     }
 }

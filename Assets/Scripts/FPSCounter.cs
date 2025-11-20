@@ -49,13 +49,15 @@ public class FPSCounter : MonoBehaviour
 
         // Assign to UI
         {
-            Text.text = "FPS: " + _currentAveraged switch
+            string fpsString = _currentAveraged switch
             {
-                var x when x >= 0 && x < _cacheNumbersAmount => CachedNumberStrings[x],
-                var x when x >= _cacheNumbersAmount => $"> {_cacheNumbersAmount}",
+                var x when x >= 0 && x < _cacheNumbersAmount * 1000 => CachedNumberStrings[x],
+                var x when x >= _cacheNumbersAmount * 1000 => $"> {_cacheNumbersAmount * 1000}",
                 var x when x < 0 => "< 0",
                 _ => "?"
             };
+            float msPerFrame = _currentAveraged > 0 ? 1000f / _currentAveraged : 0f;
+            Text.text = $"FPS: {fpsString} | {msPerFrame:F2} ms";
         }
     }
 }
