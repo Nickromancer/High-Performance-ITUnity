@@ -10,25 +10,30 @@ using Random = UnityEngine.Random;
 
 partial struct ParticleSpawnerSystem : ISystem
 {
+    private int amountOfParticles;
+    EntityCommandBuffer ECB;
+
     [BurstCompile]
     public void OnCreate(ref SystemState state)
     {
         state.RequireForUpdate<SpawnerComponent>();
+        amountOfParticles = 0;
     }
 
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
         var config = SystemAPI.GetSingleton<ConfigComp>();
+        ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+.CreateCommandBuffer(state.WorldUnmanaged);
 
         foreach (var (trans, spawner) in SystemAPI.Query<RefRO<LocalTransform>, RefRW<SpawnerComponent>>())
         {
             float3 pos = trans.ValueRO.Position;
-            if (spawner.ValueRW.timer <= 0)
+            if (spawner.ValueRW.timer <= 0 && config.maxParticlesAmount >= amountOfParticles)
             {
                 Entity e = state.EntityManager.Instantiate(config.prefab);
-
-
+                amountOfParticles++;
                 state.EntityManager.SetComponentData(e, new LocalTransform
                 {
                     Position = new float3(Random.Range(-spawner.ValueRW.depth + pos.x, spawner.ValueRW.depth + pos.x), trans.ValueRO.Position.y, Random.Range(-spawner.ValueRW.width + pos.z, spawner.ValueRW.width + pos.z)),
@@ -43,6 +48,12 @@ partial struct ParticleSpawnerSystem : ISystem
             {
                 if (particle.ValueRO.fallen)
                 {
+                    if (config.maxParticlesAmount < amountOfParticles)
+                    {
+                        ECB.DestroyEntity(entity);
+                        amountOfParticles--;
+                    }
+
                     state.EntityManager.SetComponentData(entity, new LocalTransform
                     {
                         Position = new float3(Random.Range(-spawner.ValueRW.depth + pos.x, spawner.ValueRW.depth + pos.x), trans.ValueRO.Position.y, Random.Range(-spawner.ValueRW.width + pos.z, spawner.ValueRW.width + pos.z)),
