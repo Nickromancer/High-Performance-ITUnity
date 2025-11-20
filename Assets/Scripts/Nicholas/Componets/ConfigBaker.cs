@@ -6,6 +6,8 @@ class ConfigBaker : MonoBehaviour
     public GameObject prefab;
     [Range(0, 100000)]
     public int maxParticlesAmount;
+    public int particleAmount;
+
 
     [Range(-50, 50)]
     public float amountOfForceX;
@@ -35,6 +37,8 @@ public struct ConfigComp : IComponentData
 {
     public Entity prefab;
     public int maxParticlesAmount;
+    public int particleAmount;
+
     public float amountOfForceX;
     public float amountOfForceY;
     public float amountOfForceZ;

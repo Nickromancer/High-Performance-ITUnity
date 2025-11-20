@@ -172,6 +172,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
+      propertyPath: particleAmount
+      value: 59
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
       propertyPath: maxParticlesAmount
       value: 100000
       objectReference: {fileID: 0}
