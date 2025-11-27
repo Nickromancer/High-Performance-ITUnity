@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2471216118650906069}
   - component: {fileID: -9079429207432636963}
   m_Layer: 3
-  m_Name: MyCube
+  m_Name: Snowflake
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
