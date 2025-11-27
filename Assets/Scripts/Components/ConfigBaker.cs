@@ -1,7 +1,15 @@
 using Unity.Entities;
 using UnityEngine;
 
-class ConfigBaker : MonoBehaviour
+public enum snowEnvironment
+    {
+        snowCity,
+        snowForrest,
+        snowMountain,
+        snowPlane
+    }
+
+public class ConfigBaker : MonoBehaviour
 {
     public GameObject prefab;
     [Range(0, 100000)]
@@ -18,6 +26,12 @@ class ConfigBaker : MonoBehaviour
     public bool doWhirlpool;
     public bool doStraightWind;
     public bool doUpdraft;
+
+    
+
+    public snowEnvironment environmentType;
+
+    //var downDown = muEnum.snowCity;
 }
 
 class ConfigBakerBaker : Baker<ConfigBaker>
@@ -35,6 +49,7 @@ class ConfigBakerBaker : Baker<ConfigBaker>
             doWhirlpool = authoring.doWhirlpool,
             doStraightWind = authoring.doStraightWind,
             doUpdraft = authoring.doUpdraft,
+            environmentType = authoring.environmentType,
         });
     }
 }
@@ -51,4 +66,5 @@ public struct ConfigComp : IComponentData
     public bool doWhirlpool;
     public bool doStraightWind;
     public bool doUpdraft;
+    public snowEnvironment environmentType;
 }

@@ -9128,11 +9128,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 551295855275356408, guid: a6341158ca9a1174a972af56048d4704, type: 3}
       propertyPath: depth
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 551295855275356408, guid: a6341158ca9a1174a972af56048d4704, type: 3}
       propertyPath: width
-      value: 20
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 1702402310230918971, guid: a6341158ca9a1174a972af56048d4704, type: 3}
       propertyPath: m_Name

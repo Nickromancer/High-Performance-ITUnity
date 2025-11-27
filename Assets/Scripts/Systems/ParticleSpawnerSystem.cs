@@ -27,6 +27,31 @@ partial struct ParticleSpawnerSystem : ISystem
         ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
 .CreateCommandBuffer(state.WorldUnmanaged);
 
+        foreach (var (trans, spawner) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<SpawnerComponent>>())
+        {
+            switch (config.environmentType)
+            {
+                case snowEnvironment.snowCity:
+                    trans.ValueRW.Position = new float3(50f,90f,-50f);
+                    break;
+
+                case snowEnvironment.snowForrest:
+                    trans.ValueRW.Position = new float3(-50f,90f,50f);
+                    break;
+
+                case snowEnvironment.snowMountain:
+                    trans.ValueRW.Position = new float3(50f,90f,50f);
+                    break;
+
+                case snowEnvironment.snowPlane:
+                    trans.ValueRW.Position = new float3(-50f,90f,-50f);
+                    break;
+            }
+            
+        }
+
+        
+
         foreach (var (trans, spawner) in SystemAPI.Query<RefRO<LocalTransform>, RefRW<SpawnerComponent>>())
         {
             float3 pos = trans.ValueRO.Position;
