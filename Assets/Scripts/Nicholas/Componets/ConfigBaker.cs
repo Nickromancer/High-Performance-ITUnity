@@ -15,6 +15,9 @@ class ConfigBaker : MonoBehaviour
     public float amountOfForceY;
     [Range(-50, 50)]
     public float amountOfForceZ;
+    public bool doWhirlpool;
+    public bool doStraightWind;
+    public bool doUpdraft;
 }
 
 class ConfigBakerBaker : Baker<ConfigBaker>
@@ -29,6 +32,9 @@ class ConfigBakerBaker : Baker<ConfigBaker>
             amountOfForceX = authoring.amountOfForceX,
             amountOfForceY = authoring.amountOfForceY,
             amountOfForceZ = authoring.amountOfForceZ,
+            doWhirlpool = authoring.doWhirlpool,
+            doStraightWind = authoring.doStraightWind,
+            doUpdraft = authoring.doUpdraft,
         });
     }
 }
@@ -42,4 +48,7 @@ public struct ConfigComp : IComponentData
     public float amountOfForceX;
     public float amountOfForceY;
     public float amountOfForceZ;
+    public bool doWhirlpool;
+    public bool doStraightWind;
+    public bool doUpdraft;
 }
