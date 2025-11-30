@@ -32,29 +32,29 @@ partial struct ParticleSpawnerSystem : ISystem
             switch (config.environmentType)
             {
                 case snowEnvironment.snowCity:
-                    trans.ValueRW.Position = new float3(50f,90f,-50f);
+                    trans.ValueRW.Position = new float3(50f, 90f, -50f);
                     break;
 
                 case snowEnvironment.snowForrest:
-                    trans.ValueRW.Position = new float3(-50f,90f,50f);
+                    trans.ValueRW.Position = new float3(-50f, 90f, 50f);
                     break;
 
                 case snowEnvironment.snowMountain:
-                    trans.ValueRW.Position = new float3(50f,90f,50f);
+                    trans.ValueRW.Position = new float3(50f, 90f, 50f);
                     break;
 
                 case snowEnvironment.snowPlane:
-                    trans.ValueRW.Position = new float3(-50f,90f,-50f);
+                    trans.ValueRW.Position = new float3(-50f, 90f, -50f);
                     break;
                 case snowEnvironment.movingSnowCloud:
                     float time = (float)SystemAPI.Time.ElapsedTime / 8;
-                    trans.ValueRW.Position = new float3(math.cos(time) * 50f ,90f ,math.sin(time) * 50f);
+                    trans.ValueRW.Position = new float3(math.cos(time) * 50f, 90f, math.sin(time) * 50f);
                     break;
             }
-            
+
         }
 
-        
+
 
         foreach (var (trans, spawner) in SystemAPI.Query<RefRO<LocalTransform>, RefRW<SpawnerComponent>>())
         {
@@ -67,7 +67,7 @@ partial struct ParticleSpawnerSystem : ISystem
                 {
                     Position = new float3(Random.Range(-spawner.ValueRW.depth + pos.x, spawner.ValueRW.depth + pos.x), trans.ValueRO.Position.y, Random.Range(-spawner.ValueRW.width + pos.z, spawner.ValueRW.width + pos.z)),
                     Rotation = trans.ValueRO.Rotation,
-                    Scale = trans.ValueRO.Scale
+                    Scale = Random.Range(config.minScale, config.maxScale)
                 });
                 spawner.ValueRW.timer = spawner.ValueRW.delay;
 
@@ -87,7 +87,7 @@ partial struct ParticleSpawnerSystem : ISystem
                     {
                         Position = new float3(Random.Range(-spawner.ValueRW.depth + pos.x, spawner.ValueRW.depth + pos.x), trans.ValueRO.Position.y, Random.Range(-spawner.ValueRW.width + pos.z, spawner.ValueRW.width + pos.z)),
                         Rotation = trans.ValueRO.Rotation,
-                        Scale = trans.ValueRO.Scale
+                        Scale = Random.Range(config.minScale, config.maxScale)
                     });
 
                     state.EntityManager.SetComponentData(entity, new ParticleTag { fallen = false });
