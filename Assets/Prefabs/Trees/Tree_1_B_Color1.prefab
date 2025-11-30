@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4472943144330970081}
   - component: {fileID: 5746945123815790016}
   - component: {fileID: 1669620557763561330}
+  - component: {fileID: -5241964383194086150}
   m_Layer: 0
   m_Name: Tree_1_B_Color1
   m_TagString: Untagged
@@ -103,9 +104,21 @@ MeshCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -5721979050186926994, guid: a8d9a73a1f9f62a49bdadc58f2395384, type: 3}
+--- !u!114 &-5241964383194086150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 691379600061944004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c2b6ce428be8f04c8a31a1fdce82416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

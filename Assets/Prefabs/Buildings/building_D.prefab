@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4614468808247142514}
   - component: {fileID: 1083661939165363875}
   - component: {fileID: 8288308940841097475}
+  - component: {fileID: -350277385536905337}
   m_Layer: 0
   m_Name: building_D
   m_TagString: Untagged
@@ -127,7 +128,7 @@ BoxCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1.6015781, y: 2.3556337, z: 1.3024502}
@@ -148,7 +149,7 @@ BoxCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.5206127, y: 0.6401901, z: 0.5163073}
@@ -169,8 +170,20 @@ BoxCollider:
     m_Bits: 0
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 0.40235883, y: 0.09550413, z: 0.14370365}
   m_Center: {x: -0.5191728, y: 0.16677602, z: 0.9485699}
+--- !u!114 &-350277385536905337
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8447997803930547169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c2b6ce428be8f04c8a31a1fdce82416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
