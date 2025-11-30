@@ -6,7 +6,8 @@ public enum snowEnvironment
         snowCity,
         snowForrest,
         snowMountain,
-        snowPlane
+        snowPlane,
+        movingSnowCloud
     }
 
 public class ConfigBaker : MonoBehaviour
