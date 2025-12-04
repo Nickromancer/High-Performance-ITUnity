@@ -1,4 +1,5 @@
 using Unity.Entities;
+using Unity.Entities.UniversalDelegates;
 using UnityEngine;
 
 public enum snowEnvironment
@@ -8,6 +9,13 @@ public enum snowEnvironment
     snowMountain,
     snowPlane,
     movingSnowCloud
+}
+
+public enum Mode
+{
+    MainThread,
+    Scheduled,
+    ScheduledParallel
 }
 
 public class ConfigBaker : MonoBehaviour
@@ -29,6 +37,8 @@ public class ConfigBaker : MonoBehaviour
     public bool doWhirlpool;
     public bool doStraightWind;
     public bool doUpdraft;
+    public int multiplier;
+    public Mode mode;
 
 
 
@@ -55,6 +65,10 @@ class ConfigBakerBaker : Baker<ConfigBaker>
             doStraightWind = authoring.doStraightWind,
             doUpdraft = authoring.doUpdraft,
             environmentType = authoring.environmentType,
+            multiplier = authoring.multiplier,
+            mode = authoring.mode
+
+
         });
     }
 }
@@ -74,4 +88,8 @@ public struct ConfigComp : IComponentData
     public bool doStraightWind;
     public bool doUpdraft;
     public snowEnvironment environmentType;
+    public int multiplier;
+    public Mode mode;
+
+
 }

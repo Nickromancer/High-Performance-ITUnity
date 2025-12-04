@@ -8,7 +8,6 @@ using Unity.Transforms;
 using Unity.VisualScripting;
 using UnityEngine;
 [RequireMatchingQueriesForUpdate]
-[UpdateInGroup(typeof(FixedStepSimulationSystemGroup))]
 [UpdateAfter(typeof(PhysicsSystemGroup))]
 partial struct CollisionSystem : ISystem
 {

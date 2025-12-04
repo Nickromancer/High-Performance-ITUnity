@@ -1271,6 +1271,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
+      propertyPath: mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
       propertyPath: prefab
       value: 
       objectReference: {fileID: 1824924136179805553, guid: 4a22f18b903713a4083a40252fd5fd7b, type: 3}
@@ -1291,8 +1295,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
+      propertyPath: doStraightWind
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
       propertyPath: particleAmount
-      value: 59
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
       propertyPath: environmentType
