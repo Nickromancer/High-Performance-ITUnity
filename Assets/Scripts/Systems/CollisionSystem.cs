@@ -66,12 +66,16 @@ public struct CollisionJob : ICollisionEventsJob
         if (allParticles.HasComponent(entityA) && allEnvironments.HasComponent(entityB))
         {
             // Debug.Log("happening");
-            ecb.SetComponent(entityA, new ParticleTag { fallen = true });
+            var particle = allParticles[entityA];
+            particle.fallen = true;
+            ecb.SetComponent(entityA, particle);
         }
         else if (allParticles.HasComponent(entityB))
         {
             // Debug.Log("kinda happening");
-            ecb.SetComponent(entityA, new ParticleTag { fallen = true });
+            var particle = allParticles[entityA];
+            particle.fallen = true;
+            ecb.SetComponent(entityA, particle);
         }
     }
 }

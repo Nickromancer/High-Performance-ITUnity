@@ -8,7 +8,8 @@ public enum snowEnvironment
     snowForrest,
     snowMountain,
     snowPlane,
-    movingSnowCloud
+    movingSnowCloud,
+    None,
 }
 
 public enum Mode
@@ -21,7 +22,7 @@ public enum Mode
 public class ConfigBaker : MonoBehaviour
 {
     public GameObject prefab;
-    [Range(0, 100000)]
+    [Range(0, 1000000)]
     public int maxParticlesAmount;
     public int particleAmount;
     [Range(0, 10)]

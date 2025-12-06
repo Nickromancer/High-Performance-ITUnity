@@ -18,53 +18,114 @@ partial struct ParticleSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        var config = SystemAPI.GetSingleton<ConfigComp>();
         var cam = SystemAPI.GetSingleton<CameraComp>();
         time += Time.deltaTime;
-        foreach (var (velocity, trans) in SystemAPI.Query<RefRW<PhysicsVelocity>, RefRW<LocalTransform>>().WithAll<ParticleTag>())
+
+        if (config.mode == Mode.MainThread)
         {
-            velocity.ValueRW.Linear = new float3(0, Physics.gravity.y, 0);
 
-            trans.ValueRW.Rotation = LookAt(trans.ValueRW.Position, cam.position);
+            foreach (var (velocity, trans) in SystemAPI.Query<RefRW<PhysicsVelocity>, RefRW<LocalTransform>>().WithAll<ParticleTag>())
+            {
+                velocity.ValueRW.Linear = new float3(0, Physics.gravity.y, 0);
+
+                float4 quat = default;
+                LookAt(trans.ValueRW.Position, cam.position, ref quat);
+                trans.ValueRW.Rotation = new quaternion(quat);
+            }
         }
-    }
-
-    public static Quaternion LookAt(Vector3 sourcePoint, Vector3 destPoint)
-    {
-        Vector3 forwardVector = Vector3.Normalize(destPoint - sourcePoint);
-
-        float dot = Vector3.Dot(Vector3.forward, forwardVector);
-
-        if (math.abs(dot - (-1.0f)) < 0.000001f)
+        else if (config.mode == Mode.Scheduled)
         {
-            return new Quaternion(Vector3.up.x, Vector3.up.y, Vector3.up.z, 3.1415926535897932f);
+            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+            .CreateCommandBuffer(state.WorldUnmanaged);
+
+            state.Dependency = new RotateAndGravityParticles
+            {
+                ecb = ECB,
+                cam = cam,
+
+            }.Schedule(state.Dependency);
         }
-        if (math.abs(dot - (1.0f)) < 0.000001f)
+        else if (config.mode == Mode.ScheduledParallel)
         {
-            return Quaternion.identity;
+            var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                                .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
+
+            state.Dependency = new RotateAndGravityParticlesParallel
+            {
+                ecb = ECB,
+                cam = cam,
+
+            }.Schedule(state.Dependency);
         }
-
-        float rotAngle = (float)math.acos(dot);
-        Vector3 rotAxis = Vector3.Cross(Vector3.forward, forwardVector);
-        rotAxis = Vector3.Normalize(rotAxis);
-        return CreateFromAxisAngle(rotAxis, rotAngle);
-    }
-
-    // just in case you need that function also
-    public static Quaternion CreateFromAxisAngle(Vector3 axis, float angle)
-    {
-        float halfAngle = angle * .5f;
-        float s = (float)System.Math.Sin(halfAngle);
-        Quaternion q;
-        q.x = axis.x * s;
-        q.y = axis.y * s;
-        q.z = axis.z * s;
-        q.w = (float)System.Math.Cos(halfAngle);
-        return q;
     }
 
     [BurstCompile]
-    public void OnDestroy(ref SystemState state)
+    public static void LookAt(in float3 sourcePoint, in float3 destPoint, ref float4 result)
     {
+        float3 forwardVector = math.normalize(destPoint - sourcePoint);
 
+        float dot = math.dot(new float3(0, 0, 1), forwardVector);
+
+        if (math.abs(dot - (-1.0f)) < 0.000001f)
+        {
+            result = new float4(0, 1, 0, 3.1415926535897932f);
+            return;
+        }
+        if (math.abs(dot - (1.0f)) < 0.000001f)
+        {
+            result = new float4(0, 0, 0, 1);
+            return;
+        }
+
+        float rotAngle = (float)math.acos(dot);
+        float3 rotAxis = math.cross(new float3(0, 0, 1), forwardVector);
+        rotAxis = math.normalize(rotAxis);
+        CreateFromAxisAngle(rotAxis, rotAngle, ref result);
+    }
+
+    // just in case you need that function also
+    [BurstCompile]
+    public static void CreateFromAxisAngle(in float3 axis, float angle, ref float4 result)
+    {
+        float halfAngle = angle * .5f;
+        float s = (float)math.sin(halfAngle);
+        result.x = axis.x * s;
+        result.y = axis.y * s;
+        result.z = axis.z * s;
+        result.w = (float)math.cos(halfAngle);
+    }
+
+
+    [BurstCompile, WithAll(typeof(ParticleTag))]
+    public partial struct RotateAndGravityParticles : IJobEntity
+    {
+        public EntityCommandBuffer ecb;
+        public CameraComp cam;
+
+        public void Execute(Entity e, ref PhysicsVelocity velocity, ref LocalTransform trans)
+        {
+            velocity.Linear = new float3(0, Physics.gravity.y, 0);
+
+            float4 quat = default;
+            LookAt(trans.Position, cam.position, ref quat);
+            trans.Rotation = new quaternion(quat);
+        }
+    }
+
+    [BurstCompile, WithAll(typeof(ParticleTag))]
+    public partial struct RotateAndGravityParticlesParallel : IJobEntity
+    {
+        public EntityCommandBuffer.ParallelWriter ecb;
+        public CameraComp cam;
+
+        public void Execute([ChunkIndexInQuery] int key, Entity e, ref PhysicsVelocity velocity, ref LocalTransform trans)
+        {
+            velocity.Linear = new float3(0, Physics.gravity.y, 0);
+
+            float4 quat = default;
+            LookAt(trans.Position, cam.position, ref quat);
+            trans.Rotation = new quaternion(quat);
+        }
     }
 }
