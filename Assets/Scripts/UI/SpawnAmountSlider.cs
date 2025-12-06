@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using Unity.Entities;
 
-public class SpawnSpeedSlider : MonoBehaviour
+public class SpawnAmountSlider : MonoBehaviour
 {
-    public Slider particleSpawnSpeedSlider;
-    public TMP_InputField particleSpawnSpeedInput;
-    public float particleSpawnSpeed;
+    public Slider particleSpawnAmountSlider;
+    public TMP_InputField particleSpawnAmountInput;
+    public float particleSpawnAmount;
 
     private EntityManager _manager;
     private EntityQuery _configQuery;
@@ -28,19 +28,19 @@ public class SpawnSpeedSlider : MonoBehaviour
         _configQuery = _manager.CreateEntityQuery(typeof(ConfigComp));
 
         // Listeners
-        particleSpawnSpeedSlider.onValueChanged.AddListener(OnSliderValueChanged);
-        particleSpawnSpeedInput.onValueChanged.AddListener(OnInputFieldChanged);
+        particleSpawnAmountSlider.onValueChanged.AddListener(OnSliderValueChanged);
+        particleSpawnAmountInput.onValueChanged.AddListener(OnInputFieldChanged);
 
-        particleSpawnSpeedInput.text = particleSpawnSpeedSlider.value.ToString();
+        particleSpawnAmountInput.text = particleSpawnAmountSlider.value.ToString();
     }
 
     public void OnSliderValueChanged(float value)
     {
-        particleSpawnSpeed = value;
+        particleSpawnAmount = value;
 
-        particleSpawnSpeedInput.SetTextWithoutNotify(value.ToString());
+        particleSpawnAmountInput.SetTextWithoutNotify(value.ToString());
 
-        UpdateConfigSpawnSpeed();
+        UpdateConfigSpawnAmount();
     }
 
     public void OnInputFieldChanged(string value)
@@ -48,18 +48,18 @@ public class SpawnSpeedSlider : MonoBehaviour
         if (float.TryParse(value, out float result))
         {
             result = Mathf.Clamp(result,
-                particleSpawnSpeedSlider.minValue,
-                particleSpawnSpeedSlider.maxValue);
+                particleSpawnAmountSlider.minValue,
+                particleSpawnAmountSlider.maxValue);
 
-            particleSpawnSpeed = result;
+            particleSpawnAmount = result;
 
-            particleSpawnSpeedSlider.SetValueWithoutNotify(result);
+            particleSpawnAmountSlider.SetValueWithoutNotify(result);
         }
 
-        UpdateConfigSpawnSpeed();
+        UpdateConfigSpawnAmount();
     }
 
-    public void UpdateConfigSpawnSpeed()
+    public void UpdateConfigSpawnAmount()
     {
         // If world isn't ready, skip
         if (World.DefaultGameObjectInjectionWorld == null)
@@ -76,7 +76,7 @@ public class SpawnSpeedSlider : MonoBehaviour
         _config = _configQuery.GetSingletonEntity();
 
         var data = _manager.GetComponentData<ConfigComp>(_config);
-        data.multiplier = (int)particleSpawnSpeed;
+        data.maxParticlesAmount = (int)particleSpawnAmount;
         _manager.SetComponentData(_config, data);
     }
 }

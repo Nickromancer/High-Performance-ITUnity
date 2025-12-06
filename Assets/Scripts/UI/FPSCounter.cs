@@ -30,7 +30,7 @@ public class FPSCounter : MonoBehaviour
     {
         // Sample
         {
-            var currentFrame = (int)Math.Round(1f / Time.smoothDeltaTime); // If your game modifies Time.timeScale, use unscaledDeltaTime and smooth manually (or not).
+            var currentFrame = (int)Math.Round(1f / Time.deltaTime); // If your game modifies Time.timeScale, use unscaledDeltaTime and smooth manually (or not).
             _frameRateSamples[_averageCounter] = currentFrame;
         }
 
@@ -58,6 +58,7 @@ public class FPSCounter : MonoBehaviour
             };
             float msPerFrame = _currentAveraged > 0 ? 1000f / _currentAveraged : 0f;
             Text.text = $"FPS: {fpsString} | {msPerFrame:F2} ms";
+            //Text.text = $"FPS: {currentFrame}";
         }
     }
 }
