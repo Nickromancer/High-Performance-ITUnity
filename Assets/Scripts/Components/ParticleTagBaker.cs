@@ -17,4 +17,5 @@ class ParticleTagBaker : MonoBehaviour
 public struct ParticleTag : IComponentData
 {
     public bool fallen;
+    public float id;
 }
