@@ -26,37 +26,38 @@ partial struct ParticleSpawnerSystem : ISystem
             {
                 case snowEnvironment.snowCity:
                     trans.ValueRW.Position = new float3(50f, 90f, -50f);
-                    spawner.depth = 50;
-                    spawner.width = 50;
+                    spawner.ValueRW.depth = 50;
+                    spawner.ValueRW.width = 50;
                     break;
 
                 case snowEnvironment.snowForrest:
                     trans.ValueRW.Position = new float3(-50f, 90f, 50f);
-                    spawner.depth = 50;
-                    spawner.width = 50;
+                    spawner.ValueRW.depth = 50;
+                    spawner.ValueRW.width = 50;
                     break;
 
                 case snowEnvironment.snowMountain:
                     trans.ValueRW.Position = new float3(50f, 90f, 50f);
-                    spawner.depth = 50;
-                    spawner.width = 50;
+                    spawner.ValueRW.depth = 50;
+                    spawner.ValueRW.width = 50;
                     break;
 
                 case snowEnvironment.snowPlane:
                     trans.ValueRW.Position = new float3(-50f, 90f, -50f);
-                    spawner.depth = 50;
-                    spawner.width = 50;
+                    spawner.ValueRW.depth = 50;
+                    spawner.ValueRW.width = 50;
                     break;
                 case snowEnvironment.movingSnowCloud:
                     float time = (float)SystemAPI.Time.ElapsedTime / 8;
                     trans.ValueRW.Position = new float3(math.cos(time) * 50f, 90f, math.sin(time) * 50f);
-                    spawner.depth = 50;
-                    spawner.width = 50;
+                    spawner.ValueRW.depth = 50;
+                    spawner.ValueRW.width = 50;
                     break;
                 case snowEnvironment.wholeMap:
                     trans.ValueRW.Position = new float3(0f, 90f, 0f);
-                    spawner.depth = 200;
-                    spawner.width = 200;
+                    spawner.ValueRW.depth = 200;
+                    spawner.ValueRW.width = 200;
+                    break;
                 case snowEnvironment.None:
                     break;
             }
