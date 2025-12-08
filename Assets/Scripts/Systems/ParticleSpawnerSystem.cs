@@ -55,8 +55,8 @@ partial struct ParticleSpawnerSystem : ISystem
                     break;
                 case snowEnvironment.wholeMap:
                     trans.ValueRW.Position = new float3(0f, 90f, 0f);
-                    spawner.ValueRW.depth = 200;
-                    spawner.ValueRW.width = 200;
+                    spawner.ValueRW.depth = 100;
+                    spawner.ValueRW.width = 100;
                     break;
                 case snowEnvironment.None:
                     break;
