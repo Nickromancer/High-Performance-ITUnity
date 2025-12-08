@@ -25,10 +25,8 @@ partial struct ParticleSystem : ISystem
         if (config.mode == Mode.MainThread)
         {
 
-            foreach (var (velocity, trans) in SystemAPI.Query<RefRW<PhysicsVelocity>, RefRW<LocalTransform>>().WithAll<ParticleTag>())
+            foreach (var trans in SystemAPI.Query<RefRW<LocalTransform>>().WithAll<ParticleTag>())
             {
-                velocity.ValueRW.Linear = new float3(0, Physics.gravity.y, 0);
-
                 float4 quat = default;
                 LookAt(trans.ValueRW.Position, cam.position, ref quat);
                 trans.ValueRW.Rotation = new quaternion(quat);
@@ -103,10 +101,8 @@ partial struct ParticleSystem : ISystem
         public EntityCommandBuffer ecb;
         public CameraComp cam;
 
-        public void Execute(Entity e, ref PhysicsVelocity velocity, ref LocalTransform trans)
+        public void Execute(Entity e, ref LocalTransform trans)
         {
-            velocity.Linear = new float3(0, Physics.gravity.y, 0);
-
             float4 quat = default;
             LookAt(trans.Position, cam.position, ref quat);
             trans.Rotation = new quaternion(quat);
@@ -119,10 +115,8 @@ partial struct ParticleSystem : ISystem
         public EntityCommandBuffer.ParallelWriter ecb;
         public CameraComp cam;
 
-        public void Execute([ChunkIndexInQuery] int key, Entity e, ref PhysicsVelocity velocity, ref LocalTransform trans)
+        public void Execute([ChunkIndexInQuery] int key, Entity e, ref LocalTransform trans)
         {
-            velocity.Linear = new float3(0, Physics.gravity.y, 0);
-
             float4 quat = default;
             LookAt(trans.Position, cam.position, ref quat);
             trans.Rotation = new quaternion(quat);

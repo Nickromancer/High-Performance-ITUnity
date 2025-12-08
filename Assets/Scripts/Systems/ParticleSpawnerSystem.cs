@@ -1,16 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using NUnit.Framework.Constraints;
 using Unity.Burst;
 using Unity.Entities;
-using Unity.Entities.UniversalDelegates;
-using Unity.Jobs;
 using Unity.Mathematics;
 using Unity.Transforms;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Pool;
 using Random = UnityEngine.Random;
 
 partial struct ParticleSpawnerSystem : ISystem
@@ -27,14 +19,9 @@ partial struct ParticleSpawnerSystem : ISystem
     public void OnUpdate(ref SystemState state)
     {
         var config = SystemAPI.GetSingleton<ConfigComp>();
-        float3 location = 0;
 
-        ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
-.CreateCommandBuffer(state.WorldUnmanaged);
-
-        foreach (var (trans, spawner) in SystemAPI.Query<RefRW<LocalTransform>, RefRO<SpawnerComponent>>())
+        foreach (var trans in SystemAPI.Query<RefRW<LocalTransform>>().WithAny<SpawnerComponent>())
         {
-            location = new float3(trans.ValueRO.Position);
             switch (config.environmentType)
             {
                 case snowEnvironment.snowCity:
@@ -63,54 +50,48 @@ partial struct ParticleSpawnerSystem : ISystem
         }
         if (config.mode == Mode.MainThread)
         {
-            foreach (var (trans, spawner) in SystemAPI.Query<RefRO<LocalTransform>, RefRW<SpawnerComponent>>())
+            if (config.maxParticlesAmount < config.particleAmount || config.multiplier == 0)
+                return;
+            else
             {
-                float3 pos = trans.ValueRO.Position;
-                if (spawner.ValueRW.timer <= 0 && config.maxParticlesAmount >= config.particleAmount)
+                foreach (var (trans, spawner) in SystemAPI.Query<RefRO<LocalTransform>, RefRW<SpawnerComponent>>())
                 {
-                    for (int i = 0; i < config.multiplier; i++)
+                    float3 pos = trans.ValueRO.Position;
+                    if (spawner.ValueRW.timer <= 0 && config.maxParticlesAmount >= config.particleAmount)
                     {
-                        Entity e = state.EntityManager.Instantiate(config.prefab);
-                        state.EntityManager.SetComponentData(e, new LocalTransform
+                        for (int i = 0; i < config.multiplier; i++)
                         {
-                            Position = new float3(Random.Range(-spawner.ValueRW.depth + pos.x, spawner.ValueRW.depth + pos.x), trans.ValueRO.Position.y, Random.Range(-spawner.ValueRW.width + pos.z, spawner.ValueRW.width + pos.z)),
-                            Rotation = trans.ValueRO.Rotation,
-                            Scale = Random.Range(config.minScale, config.maxScale)
-                        });
-                    }
-                    spawner.ValueRW.timer = spawner.ValueRW.delay;
+                            Entity e = state.EntityManager.Instantiate(config.prefab);
+                            state.EntityManager.SetComponentData(e, new LocalTransform
+                            {
+                                Position = new float3(Random.Range(-spawner.ValueRW.depth + pos.x, spawner.ValueRW.depth + pos.x), trans.ValueRO.Position.y, Random.Range(-spawner.ValueRW.width + pos.z, spawner.ValueRW.width + pos.z)),
+                                Rotation = trans.ValueRO.Rotation,
+                                Scale = Random.Range(config.minScale, config.maxScale)
+                            });
+                        }
+                        spawner.ValueRW.timer = spawner.ValueRW.delay;
 
-                }
-                foreach (var (particle, entity) in SystemAPI.Query<RefRW<ParticleTag>>().WithEntityAccess())
-                {
-                    if (particle.ValueRO.fallen)
+                    }
+
+
+                    var entityCount = SystemAPI.QueryBuilder().WithAll<ParticleTag>().Build().CalculateEntityCount();
+
+                    foreach (var con in SystemAPI.Query<RefRW<ConfigComp>>())
                     {
-                        state.EntityManager.SetComponentData(entity, new LocalTransform
-                        {
-                            Position = new float3(Random.Range(-spawner.ValueRW.depth + pos.x, spawner.ValueRW.depth + pos.x), trans.ValueRO.Position.y, Random.Range(-spawner.ValueRW.width + pos.z, spawner.ValueRW.width + pos.z)),
-                            Rotation = trans.ValueRO.Rotation,
-                            Scale = Random.Range(config.minScale, config.maxScale)
-                        });
-
-                        state.EntityManager.SetComponentData(entity, new ParticleTag { fallen = false });
+                        con.ValueRW.particleAmount = entityCount;
                     }
+                    spawner.ValueRW.timer -= Time.deltaTime;
                 }
-
-                var entityCount = SystemAPI.QueryBuilder().WithAll<ParticleTag>().Build().CalculateEntityCount();
-
-                foreach (var con in SystemAPI.Query<RefRW<ConfigComp>>())
-                {
-                    con.ValueRW.particleAmount = entityCount;
-                }
-                spawner.ValueRW.timer -= Time.deltaTime;
             }
         }
         else if (config.mode == Mode.Scheduled)
         {
+            if (config.maxParticlesAmount < config.particleAmount || config.multiplier == 0)
+                return;
+            else
             {
                 var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
                 .CreateCommandBuffer(state.WorldUnmanaged);
-                var spawner = SystemAPI.GetSingleton<SpawnerComponent>();
 
                 state.Dependency = new spawnParticles
                 {
@@ -120,15 +101,6 @@ partial struct ParticleSpawnerSystem : ISystem
 
                 }.Schedule(state.Dependency);
 
-                state.Dependency = new fallenParticles
-                {
-                    ecb = ECB,
-                    config = config,
-                    spawner = spawner,
-                    trans = location,
-                    Seed = (uint)Time.frameCount
-
-                }.Schedule(state.Dependency);
                 var entityCount = SystemAPI.QueryBuilder().WithAll<ParticleTag>().Build().CalculateEntityCount();
 
                 foreach (var con in SystemAPI.Query<RefRW<ConfigComp>>())
@@ -140,10 +112,14 @@ partial struct ParticleSpawnerSystem : ISystem
         }
         else if (config.mode == Mode.ScheduledParallel)
         {
+            if (config.maxParticlesAmount < config.particleAmount || config.multiplier == 0)
+            {
+                return;
+            }
+            else
             {
                 var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
                     .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
-                var spawner = SystemAPI.GetSingleton<SpawnerComponent>();
 
                 state.Dependency = new spawnParticlesParallel
                 {
@@ -153,21 +129,7 @@ partial struct ParticleSpawnerSystem : ISystem
 
                 }.Schedule(state.Dependency);
 
-
-                state.Dependency = new fallenParticlesParallel
-                {
-                    ecb = ECB,
-                    config = config,
-                    spawner = spawner,
-                    trans = location,
-                    Seed = (uint)Time.frameCount
-
-                }.Schedule(state.Dependency);
-
-
                 var entityCount = SystemAPI.QueryBuilder().WithAll<ParticleTag>().Build().CalculateEntityCount();
-
-
 
                 foreach (var con in SystemAPI.Query<RefRW<ConfigComp>>())
                 {
@@ -187,46 +149,19 @@ partial struct ParticleSpawnerSystem : ISystem
 
         public void Execute(ref LocalTransform trans, in SpawnerComponent spawner)
         {
+            float3 pos = trans.Position;
+            Unity.Mathematics.Random random;
+            float randomValue = 0;
+            for (int i = 0; i < config.multiplier; i++)
             {
-                float3 pos = trans.Position;
-                Unity.Mathematics.Random random;
-                float randomValue = 0;
-                for (int i = 0; i < config.multiplier; i++)
-                {
-                    Entity e = ecb.Instantiate(config.prefab);
-                    randomValue += i + Seed + e.Index;
-                    random = Unity.Mathematics.Random.CreateFromIndex((uint)randomValue);
+                Entity e = ecb.Instantiate(config.prefab);
+                randomValue += i + Seed + e.Index;
+                random = Unity.Mathematics.Random.CreateFromIndex((uint)randomValue);
 
-                    ecb.SetComponent(e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + pos.x,
-                                               pos.y,
-                                              (random.NextFloat() * spawner.width * 2) - spawner.depth + pos.z)));
-                    ecb.SetComponent(e, new ParticleTag { id = randomValue });
-
-                }
-            }
-        }
-    }
-
-    public partial struct fallenParticles : IJobEntity
-    {
-        public EntityCommandBuffer ecb;
-        public ConfigComp config;
-        public SpawnerComponent spawner;
-        public float3 trans;
-        public uint Seed;
-
-
-        public void Execute(Entity e, ref ParticleTag particle)
-        {
-            if (particle.fallen)
-            {
-
-                Unity.Mathematics.Random random = Unity.Mathematics.Random.CreateFromIndex((uint)Seed + (uint)particle.id);
-                ecb.SetComponent(e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + trans.x,
-                                           trans.y,
-                                          (random.NextFloat() * spawner.width * 2) - spawner.depth + trans.z)));
-
-                particle.fallen = false;
+                ecb.SetComponent(e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + pos.x,
+                                           pos.y,
+                                          (random.NextFloat() * spawner.width * 2) - spawner.depth + pos.z)));
+                ecb.SetComponent(e, new ParticleTag { id = randomValue });
             }
         }
     }
@@ -241,49 +176,23 @@ partial struct ParticleSpawnerSystem : ISystem
 
         public void Execute([ChunkIndexInQuery] int key, ref LocalTransform trans, in SpawnerComponent spawner)
         {
-            if (config.maxParticlesAmount > config.particleAmount)
+            float3 pos = trans.Position;
+            Unity.Mathematics.Random random;
+            float randomValue = 0;
+            for (int i = 0; i < config.multiplier; i++)
             {
-                float3 pos = trans.Position;
-                Unity.Mathematics.Random random;
-                float randomValue = 0;
-                for (int i = 0; i < config.multiplier; i++)
-                {
-                    Entity e = ecb.Instantiate(key, config.prefab);
-                    randomValue += i + Seed + e.Index;
-                    random = Unity.Mathematics.Random.CreateFromIndex((uint)randomValue);
+                Entity e = ecb.Instantiate(key, config.prefab);
+                randomValue += i + Seed + e.Index;
+                random = Unity.Mathematics.Random.CreateFromIndex((uint)randomValue);
 
-                    ecb.SetComponent(key, e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + pos.x,
-                                               pos.y,
-                                              (random.NextFloat() * spawner.width * 2) - spawner.depth + pos.z)));
-                    ecb.SetComponent(key, e, new ParticleTag { fallen = false, id = randomValue });
-
-                }
+                ecb.SetComponent(key, e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + pos.x,
+                                           pos.y,
+                                          (random.NextFloat() * spawner.width * 2) - spawner.depth + pos.z)));
+                ecb.SetComponent(key, e, new ParticleTag { fallen = false, id = randomValue });
             }
         }
     }
 
-    [BurstCompile]
-    public partial struct fallenParticlesParallel : IJobEntity
-    {
-        public EntityCommandBuffer.ParallelWriter ecb;
-        public ConfigComp config;
-        public SpawnerComponent spawner;
-        public float3 trans;
-        public uint Seed;
 
-
-        public void Execute([ChunkIndexInQuery] int key, Entity e, ref ParticleTag particle)
-        {
-            if (particle.fallen)
-            {
-                Unity.Mathematics.Random random = Unity.Mathematics.Random.CreateFromIndex((uint)Seed + (uint)particle.id);
-                ecb.SetComponent(key, e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + trans.x,
-                                           trans.y,
-                                          (random.NextFloat() * spawner.width * 2) - spawner.depth + trans.z)));
-
-                particle.fallen = false;
-            }
-        }
-    }
 }
 

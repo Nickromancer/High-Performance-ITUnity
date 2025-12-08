@@ -8,7 +8,6 @@ using Unity.Transforms;
 using Unity.VisualScripting;
 using UnityEngine;
 [RequireMatchingQueriesForUpdate]
-[UpdateAfter(typeof(PhysicsSystemGroup))]
 partial struct CollisionSystem : ISystem
 {
     private ComponentLookup<ParticleTag> particles;
