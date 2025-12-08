@@ -8,7 +8,8 @@ public enum snowEnvironment
     snowForrest,
     snowMountain,
     snowPlane,
-    movingSnowCloud
+    movingSnowCloud,
+    wholeMap
 }
 
 public enum Mode

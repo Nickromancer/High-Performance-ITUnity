@@ -5,7 +5,6 @@ using Unity.Entities;
 
 public class ForceSlider : MonoBehaviour
 {
-    // --- Your two pairs ---
     public SliderInputPair forceX;
     public SliderInputPair forceY;
     public SliderInputPair forceZ;
@@ -16,7 +15,7 @@ public class ForceSlider : MonoBehaviour
 
     void Start()
     {
-        // ECS world check
+
         if (World.DefaultGameObjectInjectionWorld == null)
         {
             Debug.LogWarning("No ECS World exists yet. Waiting.");
@@ -26,7 +25,6 @@ public class ForceSlider : MonoBehaviour
         _manager = World.DefaultGameObjectInjectionWorld.EntityManager;
         _configQuery = _manager.CreateEntityQuery(typeof(ConfigComp));
 
-        // Initialize both pairs
         forceX.Initialize(UpdateConfigVariableForce);
         forceY.Initialize(UpdateConfigVariableForce);
         forceZ.Initialize(UpdateConfigVariableForce);
@@ -44,7 +42,6 @@ public class ForceSlider : MonoBehaviour
 
         var data = _manager.GetComponentData<ConfigComp>(_config);
 
-        // Apply values from both slider/input pairs
         data.amountOfForceX = forceX.value;
         data.amountOfForceY = forceY.value;
         data.amountOfForceZ = forceZ.value;
@@ -54,8 +51,6 @@ public class ForceSlider : MonoBehaviour
     }
 }
 
-
-// Small helper to keep each pair isolated
 [System.Serializable]
 public class SliderInputPair
 {

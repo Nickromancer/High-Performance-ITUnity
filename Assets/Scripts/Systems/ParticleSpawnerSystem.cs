@@ -53,6 +53,9 @@ partial struct ParticleSpawnerSystem : ISystem
                     float time = (float)SystemAPI.Time.ElapsedTime / 8;
                     trans.ValueRW.Position = new float3(math.cos(time) * 50f, 90f, math.sin(time) * 50f);
                     break;
+                case snowEnvironment.wholeMap:
+                    trans.ValueRW.Position = new float3(0f, 90f, 0f);
+                    break;
             }
 
         }

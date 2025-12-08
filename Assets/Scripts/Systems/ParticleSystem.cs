@@ -18,11 +18,18 @@ partial struct ParticleSystem : ISystem
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
+        var config = SystemAPI.GetSingleton<ConfigComp>();
+
         var cam = SystemAPI.GetSingleton<CameraComp>();
         time += Time.deltaTime;
         foreach (var (velocity, trans) in SystemAPI.Query<RefRW<PhysicsVelocity>, RefRW<LocalTransform>>().WithAll<ParticleTag>())
         {
-            velocity.ValueRW.Linear = new float3(0, Physics.gravity.y, 0);
+            float3 oldVelocity = velocity.ValueRO.Linear;
+            velocity.ValueRW.Linear = new float3(oldVelocity.x, Physics.gravity.y + config.amountOfForceY, oldVelocity.z);
+
+            // velocity.ValueRW.Linear.y += 9.81f;
+
+            // Debug.Log(velocity.ValueRW.Linear.y.ToString());
 
             trans.ValueRW.Rotation = LookAt(trans.ValueRW.Position, cam.position);
         }

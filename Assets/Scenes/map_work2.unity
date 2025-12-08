@@ -26492,10 +26492,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 780963013}
   m_HandleRect: {fileID: 680109133}
   m_Direction: 0
-  m_MinValue: 1
+  m_MinValue: 0
   m_MaxValue: 30
   m_WholeNumbers: 1
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -30856,6 +30856,7 @@ GameObject:
   - component: {fileID: 980498340}
   - component: {fileID: 980498339}
   - component: {fileID: 980498338}
+  - component: {fileID: 980498341}
   m_Layer: 5
   m_Name: QuitButton
   m_TagString: Untagged
@@ -30926,7 +30927,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 980498339}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 980498341}
+        m_TargetAssemblyTypeName: QuitButton, Assembly-CSharp
+        m_MethodName: QuitApplication
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &980498339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30965,6 +30978,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 980498336}
   m_CullTransparentMesh: 1
+--- !u!114 &980498341
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980498336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 479565b7f7e29f24e96f54cba6bc017d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &981694389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -35298,6 +35323,7 @@ GameObject:
   - component: {fileID: 1120986433}
   - component: {fileID: 1120986436}
   - component: {fileID: 1120986437}
+  - component: {fileID: 1120986438}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -35435,6 +35461,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 976cbaa7ad527e94a9edd354029f9740, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1120986438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120986432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306f9a1bc81a0fe47b72331f3f163f1f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 30
+  fastMultiplier: 2
+  mouseSensitivity: 2
+  verticalClamp: 85
 --- !u!1001 &1121290420
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60312,6 +60354,7 @@ GameObject:
   - component: {fileID: 1908749858}
   - component: {fileID: 1908749857}
   - component: {fileID: 1908749856}
+  - component: {fileID: 1908749859}
   m_Layer: 5
   m_Name: Sky Location Chooser
   m_TagString: Untagged
@@ -60449,6 +60492,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1908749854}
   m_CullTransparentMesh: 1
+--- !u!114 &1908749859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1908749854}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 263dda26e17e22c4d95d75898dee9cff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 1908749856}
 --- !u!1001 &1910121788
 PrefabInstance:
   m_ObjectHideFlags: 0

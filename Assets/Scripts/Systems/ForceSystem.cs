@@ -26,7 +26,7 @@ partial struct ForceSystem : ISystem
         foreach (var (velocity, transform) in SystemAPI.Query<RefRW<PhysicsVelocity>, RefRO<LocalTransform>>().WithAll<ForceTag>())
         {
             // Example: add upward force
-            float3 force = new float3(config.amountOfForceX, config.amountOfForceY, config.amountOfForceZ);
+            float2 force = new float2(config.amountOfForceX, config.amountOfForceZ);
 
             if (config.doWhirlpool)
             {
@@ -42,7 +42,7 @@ partial struct ForceSystem : ISystem
                 float x = math.cos(angle);
                 float z = math.sin(angle);
 
-                force = new float3(x, 0f, z) * whirlpoolStrength;
+                force = new float2(x, z) * whirlpoolStrength;
             }
             if (config.doStraightWind)
             {
@@ -54,7 +54,9 @@ partial struct ForceSystem : ISystem
             }
 
             // Apply to the linear velocity (mass etc. ignored here for simplicity)
-            velocity.ValueRW.Linear += force * deltaTime;
+            velocity.ValueRW.Linear.xz += force.xy * deltaTime;
+            // velocity.ValueRW.Linear.z += force * deltaTime;
+            // velocity.ValueRW.y += force.y * deltaTime;
 
         }
     }
