@@ -142,7 +142,7 @@ partial struct ParticleSpawnerSystem : ISystem
                     config = config,
                     Seed = (uint)Time.frameCount
 
-                }.Schedule(state.Dependency);
+                }.ScheduleParallel(state.Dependency);
 
                 var entityCount = SystemAPI.QueryBuilder().WithAll<ParticleTag>().Build().CalculateEntityCount();
 

@@ -37,10 +37,13 @@ partial struct ParticleSystem : ISystem
             var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
             .CreateCommandBuffer(state.WorldUnmanaged);
 
-            state.Dependency = new RotateAndGravityParticles
+            var pos = SystemAPI.GetSingleton<CameraComp>().position;
+
+
+            state.Dependency = new RotateParticles
             {
                 ecb = ECB,
-                cam = cam,
+                pos = pos,
 
             }.Schedule(state.Dependency);
         }
@@ -49,12 +52,14 @@ partial struct ParticleSystem : ISystem
             var ECB = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
                                 .CreateCommandBuffer(state.WorldUnmanaged).AsParallelWriter();
 
-            state.Dependency = new RotateAndGravityParticlesParallel
+            var pos = SystemAPI.GetSingleton<CameraComp>().position;
+
+            state.Dependency = new RotateParticlesParallel
             {
                 ecb = ECB,
-                cam = cam,
+                pos = pos,
 
-            }.Schedule(state.Dependency);
+            }.ScheduleParallel(state.Dependency);
         }
     }
 
@@ -96,29 +101,29 @@ partial struct ParticleSystem : ISystem
 
 
     [BurstCompile, WithAll(typeof(ParticleTag))]
-    public partial struct RotateAndGravityParticles : IJobEntity
+    public partial struct RotateParticles : IJobEntity
     {
         public EntityCommandBuffer ecb;
-        public CameraComp cam;
+        public float3 pos;
 
         public void Execute(Entity e, ref LocalTransform trans)
         {
             float4 quat = default;
-            LookAt(trans.Position, cam.position, ref quat);
+            LookAt(trans.Position, pos, ref quat);
             trans.Rotation = new quaternion(quat);
         }
     }
 
     [BurstCompile, WithAll(typeof(ParticleTag))]
-    public partial struct RotateAndGravityParticlesParallel : IJobEntity
+    public partial struct RotateParticlesParallel : IJobEntity
     {
         public EntityCommandBuffer.ParallelWriter ecb;
-        public CameraComp cam;
+        public float3 pos;
 
-        public void Execute([ChunkIndexInQuery] int key, Entity e, ref LocalTransform trans)
+        public void Execute(ref LocalTransform trans)
         {
             float4 quat = default;
-            LookAt(trans.Position, cam.position, ref quat);
+            LookAt(trans.Position, pos, ref quat);
             trans.Rotation = new quaternion(quat);
         }
     }

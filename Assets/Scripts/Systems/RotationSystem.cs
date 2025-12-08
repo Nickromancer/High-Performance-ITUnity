@@ -12,7 +12,7 @@ public partial struct RotationSystem : ISystem
 
     public void OnCreate(ref SystemState state)
     {
-        state.RequireForUpdate<SpawnerComponent>();
+        state.RequireForUpdate<StopGravityTag>();
     }
 
     public void OnDestroy(ref SystemState state)

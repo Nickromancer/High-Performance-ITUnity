@@ -84,7 +84,7 @@ partial struct ForceSystem : ISystem
                 config = config,
                 time = time,
                 delta = delta
-            }.Schedule(state.Dependency);
+            }.ScheduleParallel(state.Dependency);
         }
     }
 
@@ -136,7 +136,7 @@ partial struct ForceSystem : ISystem
         public ConfigComp config;
         public float time;
         public float delta;
-        public void Execute([ChunkIndexInQuery] int key, Entity e, ref PhysicsVelocity velocity)
+        public void Execute(ref PhysicsVelocity velocity)
         {
 
             float3 force = new float3(config.amountOfForceX, config.amountOfForceY, config.amountOfForceZ);
@@ -165,10 +165,8 @@ partial struct ForceSystem : ISystem
             {
                 force = new float3(2f, 5f, 0f);
             }
-            var vel = velocity;
-            vel.Linear += force * delta;
+            velocity.Linear += force * delta;
             // Apply to the linear velocity (mass etc. ignored here for simplicity)
-            ecb.SetComponent(key, e, vel);
         }
     }
 }

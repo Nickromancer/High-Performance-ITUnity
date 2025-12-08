@@ -80,7 +80,7 @@ public partial struct FallenParticleSystem : ISystem
                 trans = location,
                 Seed = (uint)Time.frameCount
 
-            }.Schedule(state.Dependency);
+            }.ScheduleParallel(state.Dependency);
         }
     }
 }
