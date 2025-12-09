@@ -46,6 +46,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 1824924136179805553, guid: 4a22f18b903713a4083a40252fd5fd7b, type: 3}
   maxParticlesAmount: 10000
-  amountOfForceX: 1.2
+  particleAmount: 1
+  minScale: 1
+  maxScale: 1
+  amountOfForceX: 0
   amountOfForceY: 0
   amountOfForceZ: 0
+  doWhirlpool: 0
+  doStraightWind: 0
+  doUpdraft: 0
+  multiplier: 0
+  mode: 0
+  environmentType: 0

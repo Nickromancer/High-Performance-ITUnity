@@ -1048,58 +1048,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: prefab
-      value: 
-      objectReference: {fileID: 1824924136179805553, guid: 4a22f18b903713a4083a40252fd5fd7b, type: 3}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: maxScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: minScale
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: doUpdraft
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: multiplier
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: doWhirlpool
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: amountOfForceX
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: amountOfForceZ
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: doStraightWind
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: particleAmount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: environmentType
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7317776543061868087, guid: c97db2ea5aea0ef49ab64385a577a7ec, type: 3}
-      propertyPath: maxParticlesAmount
-      value: 100000
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
