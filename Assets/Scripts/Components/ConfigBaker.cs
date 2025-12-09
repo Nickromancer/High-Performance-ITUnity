@@ -4,12 +4,12 @@ using UnityEngine;
 
 public enum snowEnvironment
 {
+    wholeMap,
     snowCity,
     snowForrest,
     snowMountain,
     snowPlane,
     movingSnowCloud,
-    wholeMap,
     None,
 }
 
