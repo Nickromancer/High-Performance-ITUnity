@@ -48359,7 +48359,7 @@ MonoBehaviour:
     - m_Text: Scheduled
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Scheduled Parallel
+    - m_Text: ScheduledParallel
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
