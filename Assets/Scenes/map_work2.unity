@@ -48356,10 +48356,10 @@ MonoBehaviour:
     - m_Text: Main Thread
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Jobs Single
+    - m_Text: Schedule
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
-    - m_Text: Jobs Multi
+    - m_Text: Schedule Parallel
       m_Image: {fileID: 0}
       m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_OnValueChanged:
