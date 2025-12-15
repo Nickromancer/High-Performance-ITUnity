@@ -173,9 +173,9 @@ partial struct ParticleSpawnerSystem : ISystem
                 randomValue += i + Seed + e.Index;
                 random = Unity.Mathematics.Random.CreateFromIndex((uint)randomValue);
 
-                ecb.SetComponent(e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + pos.x,
+                ecb.SetComponent(e, LocalTransform.FromPositionRotationScale(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + pos.x,
                                            pos.y,
-                                          (random.NextFloat() * spawner.width * 2) - spawner.depth + pos.z)));
+                                          (random.NextFloat() * spawner.width * 2) - spawner.depth + pos.z), trans.Rotation, math.lerp(config.minScale, config.maxScale, random.NextFloat())));
                 ecb.SetComponent(e, new ParticleTag { id = randomValue });
             }
         }
@@ -200,9 +200,9 @@ partial struct ParticleSpawnerSystem : ISystem
                 randomValue += i + Seed + e.Index;
                 random = Unity.Mathematics.Random.CreateFromIndex((uint)randomValue);
 
-                ecb.SetComponent(key, e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + pos.x,
-                                           pos.y,
-                                          (random.NextFloat() * spawner.width * 2) - spawner.depth + pos.z)));
+                ecb.SetComponent(key, e, LocalTransform.FromPositionRotationScale(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + pos.x,
+                                          pos.y,
+                                         (random.NextFloat() * spawner.width * 2) - spawner.depth + pos.z), trans.Rotation, math.lerp(config.minScale, config.maxScale, random.NextFloat())));
                 ecb.SetComponent(key, e, new ParticleTag { fallen = false, id = randomValue });
             }
         }
