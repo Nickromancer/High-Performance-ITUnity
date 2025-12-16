@@ -99,9 +99,9 @@ public partial struct fallenParticles : IJobEntity
         {
 
             Unity.Mathematics.Random random = Unity.Mathematics.Random.CreateFromIndex((uint)Seed + (uint)particle.id);
-            ecb.SetComponent(e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + trans.x,
-                                       trans.y,
-                                      (random.NextFloat() * spawner.width * 2) - spawner.depth + trans.z)));
+            ecb.SetComponent(e, LocalTransform.FromPositionRotationScale(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + trans.x,
+                                          trans.y,
+                                         (random.NextFloat() * spawner.width * 2) - spawner.depth + trans.z), new Quaternion(), math.lerp(config.minScale, config.maxScale, random.NextFloat())));
 
             particle.fallen = false;
         }
@@ -123,9 +123,9 @@ public partial struct fallenParticlesParallel : IJobEntity
         if (particle.fallen)
         {
             Unity.Mathematics.Random random = Unity.Mathematics.Random.CreateFromIndex((uint)Seed + (uint)particle.id);
-            ecb.SetComponent(key, e, LocalTransform.FromPosition(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + trans.x,
-                                       trans.y,
-                                      (random.NextFloat() * spawner.width * 2) - spawner.depth + trans.z)));
+            ecb.SetComponent(key, e, LocalTransform.FromPositionRotationScale(new float3((random.NextFloat() * spawner.depth * 2) - spawner.depth + trans.x,
+                                          trans.y,
+                                         (random.NextFloat() * spawner.width * 2) - spawner.depth + trans.z), new Quaternion(), math.lerp(config.minScale, config.maxScale, random.NextFloat())));
             particle.fallen = false;
         }
     }
